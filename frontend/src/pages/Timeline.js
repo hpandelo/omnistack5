@@ -25,15 +25,30 @@ export default function Timeline() {
     callApi();
   };
 
-  const newTweetReceivedHandler = (data) => {
-    console.log("New Tweet Received:", data, tweetList);
-    setTweetList([ data, ...tweetList ])
+  const newDeleteReceivedHandler = (data) => {
+    console.log("New Delete Received:", data, tweetList);
+    setTweetList(tweetList.filter(tweet => tweet._id !== data._id))
   };
 
   const newLikeReceivedHandler = (data) => {
     console.log("New Like Received:", data, tweetList);
     setTweetList(tweetList.map(tweet => tweet._id === data._id ? data : tweet))
   };
+
+  const newTweetReceivedHandler = (data) => {
+    console.log("New Tweet Received:", data, tweetList);
+    setTweetList([ data, ...tweetList ])
+  };
+
+  const registerDeleteEvents = () => {
+    console.log("registerDeleteEvents");
+    io.on('delete', newDeleteReceivedHandler);
+
+    return () => {
+      console.log("unregister delete");
+      io.off('delete', newDeleteReceivedHandler);
+    };
+  }
 
   const registerLikeEvents = () => {
     console.log("registerLikeEvents");
@@ -58,17 +73,19 @@ export default function Timeline() {
   useEffect(fetchTweets, []);
   useEffect(registerTweetEvents, [tweetList]);
   useEffect(registerLikeEvents, [tweetList]);
-  // useEffect(onLoadEffect, []);
+  useEffect(registerDeleteEvents, [tweetList]);
 
   const handleNewTweet = async (e) => {
     const ENTER_KEY = 13;
 
     if (e.keyCode !== ENTER_KEY) return;
+    e.preventDefault();
     console.log("handleNewTweet");
 
     const author = localStorage.getItem('@GoTwitter:username');
     await API.post(routes.API.TWEETS, { content: newTweet, author });
     setNewTweet('');
+    return;
   }
 
   return (

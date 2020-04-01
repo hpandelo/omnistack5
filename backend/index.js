@@ -21,7 +21,7 @@ mongoose.connect(RoutesConstants.PRIVATE.MONGODB, {
 });
 
 const interceptor = (req, res, next) => {
-  console.log("Request Received", req.path);
+  console.log("Requested:", req.method, req.path);
   req.io = io;
   return next();
 };
@@ -34,5 +34,5 @@ app.use(TweeterRoutes);
 app.use(BaseRoutes);
 
 server.listen(RoutesConstants.PRIVATE.SERVER_PORT, () => {
-  console.log(`Server started at port ${RoutesConstants.PRIVATE.SERVER_PORT}`);
+  console.log(`Server started at port :${RoutesConstants.PRIVATE.SERVER_PORT}`);
 });

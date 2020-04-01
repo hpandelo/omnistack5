@@ -8,6 +8,7 @@ const RoutesConstants = {
   PUBLIC: {
     ROOT: '/',
     Tweets: '/tweets',
+    TweetID: '/tweets/:id',
     Likes: '/likes/:id',
   }
 };

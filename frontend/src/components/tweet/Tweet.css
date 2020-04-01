@@ -27,7 +27,14 @@
 }
 
 .tweet button img {
+  width: 14px;
+  height: 14px;
   margin-right: 5px;
+}
+
+.tweet .deleteButton {
+  float: right;
+  top: -10px;
 }
 
 .tweet button:hover {

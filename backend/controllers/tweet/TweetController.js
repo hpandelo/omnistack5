@@ -7,6 +7,15 @@ const TweetController = {
     return res.json(tweets);
   },
 
+  async exclude(req, res) {
+    const tweet = { _id: req.params.id };
+    tweet.dbResponse = await Tweet.deleteOne(tweet);
+
+    console.log("Tweet Deleted:", tweet._id);
+    req.io.emit('delete', tweet);
+    return res.json(tweet);
+  },
+
   async store(req, res) {
     const tweet = await Tweet.create(req.body);
     req.io.emit('tweet', tweet);
