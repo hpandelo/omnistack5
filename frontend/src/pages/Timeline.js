@@ -11,7 +11,7 @@ export default function Timeline() {
   const [ tweetList, setTweetList ] = useState([]);
   
   const fetchedList = [];
-  const io = socket(routes.API.URL);
+  const io = socket(routes.API.SOCKETURL);
 
   const fetchTweets = () => {
     const callApi = async () => {

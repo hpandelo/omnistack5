@@ -1,14 +1,14 @@
 import express from "express";
 import cors from "cors";
 import http from "http";
-import SocketIO from "socket.io";
+import io from "socket.io";
 import mongoose from "mongoose";
 import { RoutesConstants, BaseRoutes } from "./routes.js";
 import TweeterRoutes from "./controllers/routes.js";
 
 const app = express();
 const server = http.Server(app);
-const io = SocketIO(server);
+const socketio = io(server);
 
 mongoose.connect(RoutesConstants.PRIVATE.MONGODB, {
     useNewUrlParser: true,
@@ -22,7 +22,7 @@ mongoose.connect(RoutesConstants.PRIVATE.MONGODB, {
 
 const interceptor = (req, res, next) => {
   console.log("Requested:", req.method, req.path);
-  req.io = io;
+  req.io = socketio;
   return next();
 };
 
